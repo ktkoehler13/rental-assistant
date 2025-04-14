@@ -6,7 +6,6 @@ export default function ChatBox() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [typing, setTyping] = useState(false);
-  const [minimized, setMinimized] = useState(false);
   const chatEndRef = useRef(null);
 
   const sendMessage = async () => {
@@ -47,38 +46,26 @@ export default function ChatBox() {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, typing]);
 
-  if (minimized) {
-    return (
-      <div className="text-right p-4">
-        <button
-          onClick={() => setMinimized(false)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700"
-        >
-          Open Chat
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col h-[600px] max-h-[90vh] w-full">
-      <div className="flex justify-between items-center bg-blue-600 text-white p-3 rounded-t-xl">
-        <span className="font-semibold">Rental Assistant</span>
-        <button onClick={() => setMinimized(true)} className="text-white text-lg font-bold">–</button>
+      <div className="bg-blue-600 text-white p-3 rounded-t-xl text-lg font-semibold text-center">
+        Rental Assistant
       </div>
       <div className="flex-1 overflow-y-auto border-x border-b rounded-b-xl p-4 bg-white shadow-inner">
         {messages.map((msg, i) => (
           <div
             key={i}
             className={`mb-3 p-3 rounded-lg max-w-[80%] ${
-              msg.role === 'user' ? 'bg-blue-100 ml-auto text-right' : 'bg-gray-100 text-left'
+              msg.role === 'user'
+                ? 'bg-blue-100 ml-auto text-right'
+                : 'bg-gray-100 mr-auto text-left'
             }`}
           >
             {msg.content}
           </div>
         ))}
         {typing && (
-          <div className="mb-3 p-3 rounded-lg max-w-[80%] bg-gray-100 text-left italic text-gray-500">
+          <div className="mb-3 p-3 rounded-lg max-w-[80%] bg-gray-100 mr-auto text-left italic text-gray-500">
             Assistant is typing...
           </div>
         )}
